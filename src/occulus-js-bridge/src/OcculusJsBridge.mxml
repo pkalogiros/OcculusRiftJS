@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   applicationComplete="init()"
+					   closing="closingHandler(event)"
+					   minWidth="160" minHeight="365"
+					   width="160" height="365"
+					   maxWidth="160" maxHeight="365"
+					   >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import com.rift.RiftBridge;
+			import com.web.config.GlobalModel;
+			
+			/** RiftBridge Class instance **/
+			protected var framework:RiftBridge;
+			
+			protected function init():void
+			{
+				framework = new RiftBridge( this );
+				framework.addEventListener( "serverReady", function( args:Array ):void {
+					var ip:String = args[0];
+
+					ipText.text = ip;
+					ipText.scrollToRange(0);
+				});
+				
+				framework.startServer();
+				this.resetRift();
+				
+				// listeners
+				GlobalModel.getInstance().addEventListener("calibrateDevice", function(args:Array):void {
+					framework.calibrate();
+					var oldstr:String = statusLabel.text;
+
+					statusLabel.text = "calibrated";
+					setTimeout(function():void{
+						statusLabel.text = oldstr;
+					}, 2000);
+					
+				});
+				
+				GlobalModel.getInstance().addEventListener("clearCalibrateDevice", function(args:Array):void {
+					framework.clearCalibration();
+					var oldstr:String = statusLabel.text;
+					
+					statusLabel.text = "Calibration Cleared";
+					setTimeout(function():void{
+						statusLabel.text = oldstr;
+					}, 2000);
+				});
+				
+				GlobalModel.getInstance().addEventListener("serverError", function(args:Array):void {
+					statusLabel.text = "SERVER COULDNOT BE STARTED!!!";
+				});
+				GlobalModel.getInstance().addEventListener("BangBangWeReDead", function(args:Array):void {
+					NativeApplication.nativeApplication.exit();
+				});
+			}
+
+			protected function resetRift():void
+			{
+				if( !framework.startOcculus() ) {
+					statusLabel.text = "RIFT NOT FOUND/SUPPORTED";
+				} else {
+					statusLabel.text = " :)";
+				}
+			}
+
+			protected function stopRift():void
+			{
+				framework.stopRift();
+				statusLabel.text = ":(";
+			}
+			protected function resetServer():void
+			{
+				framework.resetServer();
+			}
+			
+			protected function closingHandler(event:Event):void
+			{
+				framework.dispose();
+			}
+			
+			/**
+			 * Javascript like setTimeout, function
+			 * 
+			 * @param callback	function to be called on timeout
+			 * @param interval	(milliseconds) timeout duration
+			 * @param count	how many times will the timeout run? (default is 1)
+			 **/
+			//helper Timer function (javascript like)
+			private function setTimeout( callback:Function, interval:int, count:int = 1 ) : Timer
+			{
+				var timer:Timer = new Timer( interval, count );
+				timer.addEventListener( TimerEvent.TIMER_COMPLETE, function(e:TimerEvent) : void { callback() } );
+				timer.start();
+				
+				return timer;
+			}
+		]]>
+	</fx:Script>
+
+	<s:Group id="UI" width="100%" height="100%" visible="true">
+		<s:Button x="10" y="10" width="140" height="38" label="Start Rift" click="resetRift()"/>
+		<s:Button x="10" y="52" width="140" height="38" label="Reset Server" click="resetServer()"/>
+		<s:Button x="10" y="102" width="140" height="38" label="Stop Rift" click="stopRift()"/>
+		
+		<s:TextArea x="10" y="155" width="140" height="130" text="..." id="ipText" editable="false" />
+		
+		<s:Label backgroundColor="0xFF2222" text="..." fontSize="15" fontWeight="bold" paddingTop="6" paddingLeft="10" paddingRight="5" color="0xffffff" width="160" x="0" bottom="0" height="45" id="statusLabel" />
+	</s:Group>
+
+</s:WindowedApplication>
