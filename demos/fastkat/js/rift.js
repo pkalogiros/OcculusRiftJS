@@ -2,8 +2,9 @@
 * author: pkalogiros (pkalogiros [at] live.com)
 * date 23/09/2013
 *
-* description : Rift - JS bridge for more info please see, http://rift.childnodes.com
+* description : Rift - JS bridge for more info please see, rift.childnodes.com
 **/
+
 (function( w ) {
   "use strict";
 

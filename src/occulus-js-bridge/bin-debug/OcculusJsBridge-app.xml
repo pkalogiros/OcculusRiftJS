@@ -30,11 +30,11 @@
 	<versionNumber>0.0.0</versionNumber>
 		         
 	<!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
-	<!-- <versionLabel></versionLabel> -->
+	<versionLabel>1.0</versionLabel>
 
 	<!-- Description, displayed in the AIR application installer.
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
-	<!-- <description></description> -->
+	<description>Bridging the Occulus Rift to HTML5</description>
 
 	<!-- Copyright information. Optional -->
 	<!-- <copyright></copyright> -->
@@ -135,6 +135,12 @@
 		<image114x114></image114x114>
 		<image128x128></image128x128>
 	</icon> -->
+	<icon>
+		<image16x16>assets/AppIcon-16.png</image16x16>
+		<image32x32>assets/AppIcon-32.png</image32x32>
+		<image48x48>assets/AppIcon-48.png</image48x48>
+		<image128x128>assets/AppIcon-128.png</image128x128>
+	</icon>
 
 	<!-- Whether the application handles the update when a user double-clicks an update version
 	of the AIR file (true), or the default AIR application installer handles the update (false).
@@ -143,7 +149,7 @@
 	
 	<!-- Whether the application can be launched when the user clicks a link in a web browser.
 	Optional. Default false. -->
-	<!-- <allowBrowserInvocation></allowBrowserInvocation> -->
+	<allowBrowserInvocation>true</allowBrowserInvocation>
 
 	<!-- Listing of file types for which the application can register. Optional. -->
 	<!-- <fileTypes> -->

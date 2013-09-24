@@ -355,6 +355,8 @@ package com.web
 		 **/
 		public function findInterface():void
 		{
+			IPCONFIG = "";
+			
 			var results:Vector.<NetworkInterface> = NetworkInfo.networkInfo.findInterfaces(),
 				output:String = "Display Name:\nlocalhost:" + port + "\n\n",
 				found:Boolean = false;
